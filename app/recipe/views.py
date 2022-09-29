@@ -32,7 +32,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class TagViewSet(mixins.DestroyModelMixin,mixins.UpdateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+class TagViewSet(mixins.DestroyModelMixin,
+                mixins.UpdateModelMixin, 
+                mixins.ListModelMixin, 
+                viewsets.GenericViewSet):
     # manage tags in database
     serializer_class = serializers.TagSerializer
     queryset = Tag.objects.all()
@@ -44,7 +47,9 @@ class TagViewSet(mixins.DestroyModelMixin,mixins.UpdateModelMixin, mixins.ListMo
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
 
-class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+class IngredientViewSet(mixins.UpdateModelMixin,
+                        mixins.ListModelMixin, 
+                        viewsets.GenericViewSet):
     # manage ingredients in the database
     serializer_class = serializers.IngredientSerializer
     queryset = Ingredient.objects.all()
@@ -54,5 +59,5 @@ class IngredientViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     def get_queryset(self):
         # filter queryset to authenticated user
         return self.queryset.filter(user=self.request.user).order_by('-name')
-        
+
 
