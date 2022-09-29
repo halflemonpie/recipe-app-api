@@ -198,7 +198,7 @@ class PrivateRecipeAPITests(TestCase):
             'title': 'sample title',
             'time_minutes': 40,
             'price': Decimal('2.98'),
-            'tags': [{'name': 'hello', 'name': 'world'}]
+            'tags': [{'name': 'hello'}, {'name': 'world'}]
         }
         res = self.client.post(RECIPE_URL, payload, format='json')
 
@@ -211,7 +211,7 @@ class PrivateRecipeAPITests(TestCase):
             exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user
-            ).exist()
+            ).exists()
             self.assertTrue(exists)
 
     def test_create_recipe_with_existing_tags(self):
@@ -235,8 +235,8 @@ class PrivateRecipeAPITests(TestCase):
         self.assertEqual(recipe.tags.count(), 2)
         self.assertIn(tag_indian, recipe.tags.all())
         for tag in payload['tags']:
-            exists = recipe.tags.filer(
+            exists = recipe.tags.filter(
                 name=tag['name'],
                 user=self.user
-            ).exist()
+            ).exists()
             self.assertTrue(exists)
