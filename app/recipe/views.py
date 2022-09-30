@@ -2,6 +2,7 @@
 views for the recipe APIs
 """
 
+from symbol import parameters
 from drf_spectacular.utils import (
     extend_schema_view,
     extend_schema,
@@ -17,6 +18,24 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import (Recipe, Tag, Ingredient)
 from recipe import serializers
+
+
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                'tags',
+                OpenApiTypes.STR,
+                description='Comma separated list of IDs to filter',
+            ),
+            OpenApiParameter(
+                'ingredients',
+                OpenApiTypes.STR,
+                description='Comma separated list of IDs to filer',
+            )
+        ]
+    )
+)
 
 class RecipeViewSet(viewsets.ModelViewSet):
     # view for manage recipe APIs
