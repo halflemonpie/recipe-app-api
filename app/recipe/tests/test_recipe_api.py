@@ -385,6 +385,52 @@ class PrivateRecipeAPITests(TestCase):
         self.assertNotIn(ingredient2, recipe.ingredients.all())
         self.assertEqual(recipe.ingredients.count(), 0)
 
+    def test_filter_by_tags(self):
+        # test filter recipes by tags
+        recipe1 = create_recipe(user=self.user, title='Fried Rice')
+        recipe2 = create_recipe(user=self.user, title='Kimchi Soup')
+        recipe3 = create_recipe(user=self.user, title='Lemon Pie')
+        tag1 = Tag.objects.create(user=self.user, name='Rice')
+        tag2 = Tag.objects.create(user=self.user, name='Soup')
+
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+        
+        params = {'tags': f'{tag1.id},{tag2.id}'}
+        res = self.client.get(RECIPE_URL, params)
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+
+        self.assertIn(serializer1, res.data)
+        self.assertIn(serializer2, res.data)
+        self.assertNotIn(serializer3, res.data)
+
+    def test_filer_by_ingredients(self):
+        # test filtering by ingredients
+        recipe1 = create_recipe(user=self.user, title='Fried Rice')
+        recipe2 = create_recipe(user=self.user, title='Kimchi Soup')
+        recipe3 = create_recipe(user=self.user, title='Lemon Pie')
+        ingredient1 = Ingredient.objects.create(user=self.user, name='Rice')
+        ingredient2 = Ingredient.objects.create(user=self.user, name='Kimchi')
+
+        recipe1.ingredients.add(ingredient1)
+        recipe2.ingredients.add(ingredient2)
+        
+        params = {'ingredients': f'{ingredient1.id},{ingredient2.id}'}
+        res = self.client.get(RECIPE_URL, params)
+
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+
+
+        self.assertIn(serializer1, res.data)
+        self.assertIn(serializer2, res.data)
+        self.assertNotIn(serializer3, res.data)       
+
 
 class ImageUploadTests(TestCase):
     # tests for uploading image API
