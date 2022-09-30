@@ -404,9 +404,9 @@ class PrivateRecipeAPITests(TestCase):
         serializer3 = RecipeSerializer(recipe3)
 
 
-        self.assertIn(serializer1, res.data)
-        self.assertIn(serializer2, res.data)
-        self.assertNotIn(serializer3, res.data)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
 
     def test_filer_by_ingredients(self):
         # test filtering by ingredients
@@ -427,9 +427,9 @@ class PrivateRecipeAPITests(TestCase):
         serializer3 = RecipeSerializer(recipe3)
 
 
-        self.assertIn(serializer1, res.data)
-        self.assertIn(serializer2, res.data)
-        self.assertNotIn(serializer3, res.data)       
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)       
 
 
 class ImageUploadTests(TestCase):
